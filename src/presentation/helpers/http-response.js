@@ -22,9 +22,10 @@ module.exports = class HttpResponse {
     }
   }
 
-  static authorized() {
+  static authorized(accessToken) {
     return {
       statusCode: 200,
+      body: accessToken
     }
   }
 }

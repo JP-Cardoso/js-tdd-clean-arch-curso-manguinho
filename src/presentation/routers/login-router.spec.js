@@ -119,8 +119,7 @@ describe('Login router', () => {
   })
 
   test('should return 200 when valid credentials are provided', () => {
-    const { sut } = makeSut();
-
+    const { sut, authUseCaseSpy } = makeSut();
 
     httpRequest = {
       body: {
@@ -130,8 +129,9 @@ describe('Login router', () => {
     }
 
     const httpResponse = sut.route(httpRequest);
-    console.log(httpResponse.statusCode);
     expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body.accessToken).toEqual(authUseCaseSpy.accessToken);
+
   })
 
 
