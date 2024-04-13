@@ -7,6 +7,7 @@
 
 const LoginRouter = require('./login-router');
 const MissingParamerror = require('../helpers/missing-param-error');
+const UnauthorizedError = require('../helpers/unauthorized-param-error');
 
 //factory pattern
 //esse cara é um fake
@@ -98,5 +99,6 @@ describe('Login router', () => {
     const httpResponse = sut.route(httpRequest);
 
     expect(httpResponse.statusCode).toBe(401);
+    expect(httpResponse.body).toEqual(new UnauthorizedError())
   })
 })
