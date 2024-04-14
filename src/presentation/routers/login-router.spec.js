@@ -7,6 +7,7 @@
 
 const LoginRouter = require('./login-router');
 const MissingParamerror = require('../helpers/missing-param-error');
+const InvalidParamError = require('../helpers/invalid-param-error');
 const UnauthorizedError = require('../helpers/unauthorized-param-error');
 const ServerError = require('../helpers/server-param-error');
 
@@ -14,9 +15,22 @@ const ServerError = require('../helpers/server-param-error');
 //esse cara é um fake
 const makeSut = () => {
   const authUseCaseSpy = makeAuthUseCase();
-  authUseCaseSpy.accessToken = 'valid token';
-  const sut = new LoginRouter(authUseCaseSpy);
-  return { authUseCaseSpy, sut };
+  const emailValidatorSpy = makeEmailValidator()
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy);
+  return { authUseCaseSpy, sut, emailValidatorSpy };
+}
+
+const makeEmailValidator = () => {
+  class EmailValidatorSpy {
+
+    isValid(email) {
+      return this.isEmailValid;
+    }
+  }
+
+  const emailValidatorSpy = new EmailValidatorSpy();
+  emailValidatorSpy.isEmailValid = true;
+  return emailValidatorSpy;
 }
 
 const makeAuthUseCase = () => {
@@ -27,7 +41,9 @@ const makeAuthUseCase = () => {
       return this.accessToken;
     }
   }
-  return new AuthUseCaseSpy();
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  authUseCaseSpy.accessToken = 'valid token';
+  return authUseCaseSpy;
 }
 
 const makeAuthUseCaseWithError = () => {
@@ -185,19 +201,19 @@ describe('Login router', () => {
   })
 
 
-  // test('should return 400 if an invalid email is provided ', async () => {
-  //   const { sut } = makeSut();
+  test('should return 400 if an invalid email is provided ', async () => {
+    const { sut, emailValidatorSpy } = makeSut();   
+    const httpRequest = {
+      body: {
+        email: 'invalid_email@hotmail.com',
+        password: 'any_151851'
+      }
+    }
+    emailValidatorSpy.isEmailValid = false;
 
-  //   const httpRequest = {
-  //     body: {
-  //       email: 'invalid_email@hotmail.com',
-  //       password: 'any_151851'
-  //     }
-  //   }
-
-  //   const httpResponse = await sut.route(httpRequest);
-  //   expect(httpResponse.statusCode).toBe(400);
-  //   expect(httpResponse.body).toEqual(new InvalidParamError('email'));
-  // })
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'));
+  })
 
 })
