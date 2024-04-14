@@ -50,7 +50,6 @@ describe('Login router', () => {
     }
 
     const httpResponse = await sut.route(httpRequest);
-
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamerror('email'));
   })
@@ -96,7 +95,6 @@ describe('Login router', () => {
     }
 
     await sut.route(httpRequest);
-
     expect(authUseCaseSpy.email).toEqual(httpRequest.body.email);
     expect(authUseCaseSpy.password).toEqual(httpRequest.body.password);
   })
@@ -163,7 +161,6 @@ describe('Login router', () => {
     }
 
     const httpResponse = await sut.route(httpRequest);
-
     expect(httpResponse.statusCode).toBe(401);
     expect(httpResponse.body).toEqual(new UnauthorizedError())
   })
@@ -186,4 +183,21 @@ describe('Login router', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   })
+
+
+  // test('should return 400 if an invalid email is provided ', async () => {
+  //   const { sut } = makeSut();
+
+  //   const httpRequest = {
+  //     body: {
+  //       email: 'invalid_email@hotmail.com',
+  //       password: 'any_151851'
+  //     }
+  //   }
+
+  //   const httpResponse = await sut.route(httpRequest);
+  //   expect(httpResponse.statusCode).toBe(400);
+  //   expect(httpResponse.body).toEqual(new InvalidParamError('email'));
+  // })
+
 })
