@@ -1,6 +1,6 @@
-const MissingParamerror = require('./missing-param-error');
-const UnauthorizedError = require('./unauthorized-param-error');
-const ServerError = require('./server-param-error');
+const MissingParamerror = require('../errors/missing-param-error');
+const UnauthorizedError = require('../errors/unauthorized-param-error');
+const ServerError = require('../errors/server-param-error');
 
 module.exports = class HttpResponse {
   static badRequest(error) {

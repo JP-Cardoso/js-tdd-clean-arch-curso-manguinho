@@ -6,10 +6,8 @@
  */
 
 const LoginRouter = require('./login-router');
-const MissingParamerror = require('../helpers/missing-param-error');
-const InvalidParamError = require('../helpers/invalid-param-error');
-const UnauthorizedError = require('../helpers/unauthorized-param-error');
-const ServerError = require('../helpers/server-param-error');
+const { InvalidParamError, MissingParamerror, UnauthorizedError, ServerError } = require('../errors');
+
 
 //factory pattern
 //esse cara é um fake
