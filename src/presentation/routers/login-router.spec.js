@@ -202,7 +202,7 @@ describe('Login router', () => {
 
 
   test('should return 400 if an invalid email is provided ', async () => {
-    const { sut, emailValidatorSpy } = makeSut();   
+    const { sut, emailValidatorSpy } = makeSut();
     const httpRequest = {
       body: {
         email: 'invalid_email@hotmail.com',
@@ -215,5 +215,37 @@ describe('Login router', () => {
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new InvalidParamError('email'));
   })
+
+  test('should return 500 if no EmailValidator is provided', async () => {
+    const authUseCaseSpy = makeAuthUseCase();
+    const sut = new LoginRouter(authUseCaseSpy);
+    const httpRequest = {
+      email: 'any_email@hotmail.com',
+      password: 'any_151851'
+    }
+
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
+
+
+  test('should return 500 if no EmailValidator has no isValid method', async () => {
+    const authUseCaseSpy = makeAuthUseCase();
+    const sut = new LoginRouter(authUseCaseSpy, {});
+    const httpRequest = {
+      email: 'any_email@hotmail.com',
+      password: 'any_151851'
+    }
+
+    const httpResponse = await sut.route(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError())
+    /**
+      * ali no new LoginRouter(_, {}), o objeto vazio seria como criar uma 
+      * instância do emailValidator porém sem nehum método dentro dele
+      */
+  })
+
 
 })
