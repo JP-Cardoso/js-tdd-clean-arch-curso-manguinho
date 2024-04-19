@@ -6,7 +6,9 @@
  */
 
 const LoginRouter = require('./login-router');
-const { InvalidParamError, MissingParamerror, UnauthorizedError, ServerError } = require('../errors');
+const { UnauthorizedError, ServerError } = require('../errors');
+const { InvalidParamError, MissingParamerror } = require('../../utils/errors');
+
 
 
 //factory pattern
