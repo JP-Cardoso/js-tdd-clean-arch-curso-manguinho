@@ -9,8 +9,6 @@ const LoginRouter = require('./login-router');
 const { UnauthorizedError, ServerError } = require('../errors');
 const { InvalidParamError, MissingParamerror } = require('../../utils/errors');
 
-
-
 //factory pattern
 //esse cara é um fake
 const makeSut = () => {
