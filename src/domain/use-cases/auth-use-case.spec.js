@@ -53,7 +53,7 @@ describe('Auth UseCase', () => {
 
     const sut = new AuthUseCase();
     const promise = sut.auth(credentials.email, credentials.password);
-    expect(promise).rejects.toThrow(new MissingParamerror('loadUserByEmailRepository'));
+    expect(promise).rejects.toThrow();
   })
 
   test('should throws if LoadUserByEmailRepository has no load method', async () => {
@@ -65,7 +65,7 @@ describe('Auth UseCase', () => {
 
     const sut = new AuthUseCase({});
     const promise = sut.auth(credentials.email, credentials.password);
-    expect(promise).rejects.toThrow(new InvalidParamError('loadUserByEmailRepository'));
+    expect(promise).rejects.toThrow();
   })
 
   test('should return null if loadUserByEmailRepository return null', async () => {
